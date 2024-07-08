@@ -1,0 +1,11 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Ripulisci dai WAV",
+			"type": "shell",
+			"command": "rm -R *.wav",
+			"problemMatcher": []
+		}
+	]
+}

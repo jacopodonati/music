@@ -76,20 +76,9 @@ def test_silence():
 def test_noise_distribution(noise_type):
     noise_vector = noises.noise(noise_type=noise_type)
 
-    dist = 'norm'
-    # exponent = 0
-    if (noise_type != 'white'):
-        dist = 'expon'
-        # if (noise_type == 'black'):
-        #     exponent = -3
-        # elif (noise_type == 'brown'):
-        #     exponent = -2
-        # elif (noise_type == 'pink'):
-        #     exponent = -1
-        # elif (noise_type == 'blue'):
-        #     exponent = 1
-        # elif (noise_type == 'violet'):
-        #     exponent = 2
+    dist = 'expon'
+    if (noise_type == 'white'):
+        dist = 'norm'
 
     result = anderson(noise_vector, dist=dist)
     p_value = np.exp(-result.statistic)
@@ -101,7 +90,6 @@ def test_noise_distribution(noise_type):
 def test_noise(noise_type):
     """ Test synth of different kinds of noises. """
 
-    # Test case: noise distribution
     noise_vector = noises.noise(noise_type, duration=2, sample_rate=44100)
     print(noise_vector[0:4])
 
@@ -140,9 +128,10 @@ def test_noise_power_spectrum(noise_type):
     noise_vector = noises.noise(noise_type, duration=2, sample_rate=44100)
 
     # Calculate power spectrum using FFT
-    freq = np.fft.fft(len(noise_vector))
+    freq = np.fft.fftfreq(len(noise_vector), d=1.0/44100)
     power_spectrum = np.abs(np.fft.fft(noise_vector))**2
     print(np.mean(power_spectrum), power_spectrum[100])
+
     # Test power spectrum shape
     if noise_type == "white":
         # White noise should have a flat power spectrum.  Fail if power
